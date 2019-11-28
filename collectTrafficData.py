@@ -1,4 +1,3 @@
-import sys
 import xml.etree.ElementTree as ET
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -8,8 +7,9 @@ import requests
 if __name__ == "__main__":
     graph = nx.DiGraph()
 
-    url = "http://openapi.its.go.kr/dev/TrafficInfo.xml;jsessionid=533FDD030B9595A85D82E02634DEB80F" # Should be changed
-    response = requests.get(url)
+    # Query openapi road network traffic data
+    apiURL = "http://openapi.its.go.kr/dev/TrafficInfo.xml;jsessionid=533FDD030B9595A85D82E02634DEB80F" # Should be changed
+    response = requests.get(apiURL)
     print("Status code : ", response.status_code)
 
     xmlData = response.text
