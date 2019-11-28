@@ -47,7 +47,7 @@ if __name__ == "__main__":
     latitude = []
     longitude = []
 
-    for idx, feature in enumerate(sf_node.shapes()):
+    for feature in sf_node.shapes():
         x, y = feature.points[0][0], feature.points[0][1]
         nx, ny = transform(inProj, outProj, x, y)
         latitude.append(ny)
