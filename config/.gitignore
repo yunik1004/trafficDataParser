@@ -1,0 +1,6 @@
+# All except template files
+*
+*/
+
+!.gitignore
+!*.template
