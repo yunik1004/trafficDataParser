@@ -1,1 +1,7 @@
+---
+# You need to copy this file and convert its name to 'settings.yaml'
+# Also, change the settings that you'd like to do
+
 authKey: xxxxxxxxxxxxx   # Authorization key for openapi
+
+...

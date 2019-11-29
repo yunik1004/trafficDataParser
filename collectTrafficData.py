@@ -21,7 +21,7 @@ if __name__ == "__main__":
     authkey = conf['authKey']
 
     # Query openapi road network traffic data
-    apiURL = "http://openapi.its.go.kr/api/NTrafficInfo?&zoom=16&key=" + str(authkey)
+    apiURL = f"http://openapi.its.go.kr/api/NTrafficInfo?&zoom=16&key={authkey}"
     response = requests.get(apiURL)
 
     xmlData = response.text
