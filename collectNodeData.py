@@ -55,5 +55,5 @@ if __name__ == "__main__":
     #endfor
 
     df_node = pd.DataFrame({'id': ids, 'name': names, 'latitude': latitude, 'longitude': longitude})
-    df_node.to_csv(os.path.join(datasetPath, "nodeData.csv"))
+    df_node.to_csv(os.path.join(datasetPath, "nodeData.csv"), encoding="cp949", index=False)
 #endif
