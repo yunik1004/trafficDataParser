@@ -30,6 +30,10 @@ def extract (filepath, dirpath):
 
 if __name__ == "__main__":
     datasetPath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Dataset")
+    if not os.path.exists(datasetPath):
+        os.makedirs(datasetPath)
+    #endif
+
     downloadPath = os.path.join(datasetPath, "nodelink.zip")
     extractPath = os.path.join(datasetPath, "nodelink")
     resultPath = os.path.join(datasetPath, "nodeData.csv")

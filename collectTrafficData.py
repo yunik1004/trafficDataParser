@@ -1,10 +1,13 @@
 import xml.etree.ElementTree as ET
 import matplotlib.pyplot as plt
 import networkx as nx
+import pandas as pd
 import requests
 
 
 if __name__ == "__main__":
+    nodes = pd.read_csv('Dataset/nodeData.csv', encoding='cp949')
+
     graph = nx.DiGraph()
 
     # Query openapi road network traffic data
