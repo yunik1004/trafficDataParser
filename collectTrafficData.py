@@ -1,7 +1,7 @@
 import os
+import sqlite3
+import sys
 import xml.etree.ElementTree as ET
-import networkx as nx
-import pandas as pd
 import requests
 import yaml
 
@@ -13,7 +13,7 @@ if __name__ == "__main__":
         os.makedirs(datasetPath)
     #endif
     settingsPath = os.path.join(currentDir, "config", "settings.yaml")
-    resultPath = os.path.join(datasetPath, "nodeLink.csv")
+    resultDBPath = os.path.join(datasetPath, "traffic.db")
 
     with open(settingsPath) as f:
         conf = yaml.safe_load(f)
@@ -22,38 +22,38 @@ if __name__ == "__main__":
 
     # Query openapi road network traffic data
     apiURL = f"http://openapi.its.go.kr/api/NTrafficInfo?&zoom=16&key={authkey}"
-    response = requests.get(apiURL)
 
-    xmlData = response.text
-    root = ET.fromstring(xmlData)
+    try:
+        response = requests.get(apiURL)
+    except requests.exceptions.RequestException as e:
+        print(e)
+        sys.exit(1)
+    else:
+        root = ET.fromstring(response.text)
+    #endtry
 
-    sources = []
-    targets = []
-    names = []
-    avgspeeds = []
-    traveltimes = []
-    dates = []
+    conn = sqlite3.connect(resultDBPath)
+    with conn:
+        cur = conn.cursor()
+        cur.execute("CREATE TABLE IF NOT EXISTS traffic (id INT, name STRING, source INT, target INT, avgspeed INT, traveltime INT, generatedate INT, PRIMARY KEY (id, generatedate))")
 
-    for data in root.findall('data'):
-        try:
-            startnodeid = int(data.find('startnodeid').text)
-            endnodeid = int(data.find('endnodeid').text)
-            name = data.find('roadnametext').text
-            avgspeed = int(data.find('avgspeed').text)
-            traveltime = int(data.find('traveltime').text)
-            gendate = data.find('generatedate').text
-        except TypeError:
-            pass
-        else:
-            sources.append(startnodeid)
-            targets.append(endnodeid)
-            names.append(name)
-            avgspeeds.append(avgspeed)
-            traveltimes.append(traveltime)
-            dates.append(gendate)
-        #endtry
-    #endfor
+        query = "INSERT INTO traffic VALUES (?, ?, ?, ?, ?, ?, ?)"
 
-    df_link = pd.DataFrame({'source': sources, 'target': targets, 'name': names, 'avgspeed': avgspeeds, 'traveltime': traveltimes, 'generatedate': dates})
-    df_link.to_csv(resultPath, encoding="cp949", index=False)
+        for data in root.findall('data'):
+            try:
+                roadid = int(data.find('roadsectionid').text)
+                startnodeid = int(data.find('startnodeid').text)
+                endnodeid = int(data.find('endnodeid').text)
+                name = data.find('roadnametext').text
+                avgspeed = int(data.find('avgspeed').text)
+                traveltime = int(data.find('traveltime').text)
+                gendate = data.find('generatedate').text
+                cur.execute(query, (roadid, startnodeid, endnodeid, name, avgspeed, traveltime, gendate))
+            except TypeError:
+                pass
+            except sqlite3.Error: # Do not insert same data
+                pass
+            #endtry
+        #endfor
+    #endwith
 #endif
