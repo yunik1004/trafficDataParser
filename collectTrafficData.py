@@ -90,4 +90,6 @@ if __name__ == "__main__":
         traffic.req_traffic()
         time.sleep(300)
     #endwhile
+
+    conn.close()
 #endif
