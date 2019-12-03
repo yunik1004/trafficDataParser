@@ -22,5 +22,6 @@ seoulnodelink:
 seoultraffic:
     URL: http://openapi.seoul.go.kr:8088
     key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx # You have to insert appropriate authorization key for seoul openapi
+    filename: seoulTraffic
 
 ...
