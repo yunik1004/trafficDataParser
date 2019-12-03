@@ -5,7 +5,7 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 import requests
-import yaml
+from utils import DatasetPath, getSettings
 
 
 class Traffic:
@@ -59,21 +59,14 @@ class Traffic:
 
 
 if __name__ == "__main__":
-    currentDir = os.path.dirname(os.path.abspath(__file__))
-    datasetPath = os.path.join(currentDir, "Dataset")
-    if not os.path.exists(datasetPath):
-        os.makedirs(datasetPath)
-    #endif
-    settingsPath = os.path.join(currentDir, "config", "settings.yaml")
-    resultDBPath = os.path.join(datasetPath, "traffic.db")
+    conf = getSettings()
+    openapiSettings = conf['openapi']
 
-    with open(settingsPath) as f:
-        conf = yaml.safe_load(f)
-    #endwith
-    authkey = conf['authKey']
+    datasetPath = DatasetPath()
+    resultDBPath = os.path.join(datasetPath, f"{openapiSettings['filename']}.db")
 
     # Query openapi road network traffic data
-    apiURL = f"http://openapi.its.go.kr/api/NTrafficInfo?&zoom=16&key={authkey}"
+    apiURL = openapiSettings['URL'] + f"?&zoom=16&key={openapiSettings['key']}"
 
     conn = sqlite3.connect(resultDBPath, check_same_thread=False)
 

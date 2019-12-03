@@ -2,6 +2,15 @@
 # You need to copy this file and convert its name to 'settings.yaml'
 # Also, change the settings that you'd like to do
 
-authKey: xxxxxxxxxxxxx   # Authorization key for openapi
+# Settings for the NodeLink data
+nodelink:
+    URL: http://nodelink.its.go.kr/Common/download.aspx?mapPath=/FileData/Pds&fileName=[2019-09-20]%20%EC%A0%84%EA%B5%AD%ED%91%9C%EC%A4%80%EB%85%B8%EB%93%9C%EB%A7%81%ED%81%AC.zip
+    filename: nodeLink
+
+# Settings for the National traffic data
+openapi:
+    URL: http://openapi.its.go.kr/api/NTrafficInfo
+    key: xxxxxxxxxxxxx  # You have to insert appropriate authorization key for openapi
+    filename: traffic
 
 ...

@@ -1,45 +1,23 @@
 import os
 import sqlite3
-import sys
-import zipfile
 from pyproj import Proj, transform
 import requests
 import shapefile
-
-
-# Download and extract the file
-def download (url, filepath):
-    if not os.path.isfile(filepath):
-        with open(filepath, "wb") as file:
-            response = requests.get(url)
-            file.write(response.content)
-        #endwith
-    #endif
-#enddef
-
-
-# Extract the file
-def extract (filepath, dirpath):
-    if not os.path.isdir(dirpath):
-        filezip = zipfile.ZipFile(filepath)
-        filezip.extractall(dirpath)
-        filezip.close()
-    #endif
-#enddef
+from utils import download, extract, DatasetPath, getSettings
 
 
 if __name__ == "__main__":
-    datasetPath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Dataset")
-    if not os.path.exists(datasetPath):
-        os.makedirs(datasetPath)
-    #endif
+    conf = getSettings()
+    openapiSettings = conf['nodelink']
+    fileName = openapiSettings['filename']
 
-    downloadPath = os.path.join(datasetPath, "nodelink.zip")
-    extractPath = os.path.join(datasetPath, "nodelink")
-    resultPath = os.path.join(datasetPath, "nodeData.db")
+    datasetPath = DatasetPath()
+    downloadPath = os.path.join(datasetPath, f"{fileName}.zip")
+    extractPath = os.path.join(datasetPath, f"{fileName}")
+    resultPath = os.path.join(datasetPath, f"{fileName}.db")
 
     # Download Korea standard node link data
-    nodeDataURL = "http://nodelink.its.go.kr/Common/download.aspx?mapPath=/FileData/Pds&fileName=[2019-09-20]%20%EC%A0%84%EA%B5%AD%ED%91%9C%EC%A4%80%EB%85%B8%EB%93%9C%EB%A7%81%ED%81%AC.zip"
+    nodeDataURL = openapiSettings['URL']
     download(nodeDataURL, downloadPath)
     extract(downloadPath, extractPath)
 
