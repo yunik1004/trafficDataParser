@@ -13,4 +13,14 @@ openapi:
     key: xxxxxxxxxxxxx  # You have to insert appropriate authorization key for openapi
     filename: traffic
 
+# Settings for the Seoul NodeLink data
+seoulnodelink:
+    mappingfilename: 서울특별시 교통소통 표준링크 매핑정보_20190716.xls
+    filename: seoulNodeLink
+
+# Settings for the Seoul traffic data
+seoultraffic:
+    URL: http://openapi.seoul.go.kr:8088
+    key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx # You have to insert appropriate authorization key for seoul openapi
+
 ...
