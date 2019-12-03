@@ -68,8 +68,7 @@ if __name__ == "__main__":
     # Query openapi road network traffic data
     apiURL = openapiSettings['URL'] + f"?&zoom=16&key={openapiSettings['key']}"
 
-    conn = sqlite3.connect(resultDBPath, check_same_thread=False)
-
+    conn = sqlite3.connect(resultDBPath)
     # If table does not exist, then create the table
     with conn:
         cur = conn.cursor()
