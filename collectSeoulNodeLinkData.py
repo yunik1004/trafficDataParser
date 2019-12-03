@@ -38,7 +38,6 @@ if __name__ == "__main__":
             #endif
         #endfor
     #endwith
-    conn_nodelink.close()
 
     conn_seoul_nodelink = sqlite3.connect(resultFilePath)
     with conn_seoul_nodelink:
@@ -49,6 +48,40 @@ if __name__ == "__main__":
         for row in rows:
             try:
                 cur.execute(query, (row[1][0], row[0], row[1][1], row[1][2], row[1][3]))
+            except sqlite3.Error: # Do not insert same data
+                pass
+            #endtry
+        #endfor
+
+        query = "SELECT source FROM link UNION SELECT target FROM link"
+        cur.execute(query)
+        nodeids = cur.fetchall()
+    #endwith
+
+    nodeids = list(map(lambda x: x[0], nodeids))
+    nodes = []
+
+    with conn_nodelink:
+        cur = conn_nodelink.cursor()
+        query = "SELECT * FROM node WHERE id=?"
+        for nid in nodeids:
+            cur.execute(query, (nid, ))
+            row = cur.fetchone()
+            if row:
+                nodes.append(row)
+            #endif
+        #endfor
+    #endwith
+    conn_nodelink.close()
+
+    with conn_seoul_nodelink:
+        cur = conn_seoul_nodelink.cursor()
+        cur.execute("CREATE TABLE IF NOT EXISTS node (id INTEGER PRIMARY KEY, name TEXT, latitude REAL NOT NULL, longitude REAL NOT NULL)")
+
+        query = "INSERT INTO node VALUES (?, ?, ?, ?)"
+        for node in nodes:
+            try:
+                cur.execute(query, node)
             except sqlite3.Error: # Do not insert same data
                 pass
             #endtry
