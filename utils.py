@@ -44,7 +44,7 @@ def getSettings ():
         sys.exit(1)
     #endif
 
-    with open(settingsPath) as f:
+    with open(settingsPath, encoding="utf-8") as f:
         conf = yaml.safe_load(f)
     #endwith
 

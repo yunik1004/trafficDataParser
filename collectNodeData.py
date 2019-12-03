@@ -52,7 +52,11 @@ if __name__ == "__main__":
 
         query = "INSERT INTO node VALUES (?, ?, ?, ?)"
         for i in range(len(ids)):
-            cur.execute(query, (ids[i], names[i], latitude[i], longitude[i]))
+            try:
+                cur.execute(query, (ids[i], names[i], latitude[i], longitude[i]))
+            except sqlite3.Error: # Do not insert same data
+                pass
+            #endtry
         #endfor
     #endwith
     conn.close()
