@@ -63,7 +63,7 @@ if __name__ == "__main__":
     openapiSettings = conf['openapi']
 
     datasetPath = DatasetPath()
-    resultDBPath = os.path.join(datasetPath, f"{openapiSettings['filename']}.db")
+    resultDBPath = os.path.join(datasetPath, f"{openapiSettings['filename']}.sqlite3")
 
     # Query openapi road network traffic data
     apiURL = openapiSettings['URL'] + f"?&zoom=16&key={openapiSettings['key']}"
@@ -73,7 +73,7 @@ if __name__ == "__main__":
     # If table does not exist, then create the table
     with conn:
         cur = conn.cursor()
-        cur.execute("CREATE TABLE IF NOT EXISTS graph (id INTEGER PRIMARY KEY NOT NULL, name TEXT, source INTEGER NOT NULL, target INTEGER NOT NULL)")
+        cur.execute("CREATE TABLE IF NOT EXISTS graph (id INTEGER PRIMARY KEY, name TEXT, source INTEGER NOT NULL, target INTEGER NOT NULL)")
         cur.execute("CREATE TABLE IF NOT EXISTS traffic (id INTEGER NOT NULL, source INTEGER NOT NULL, target INTEGER NOT NULL, avgspeed INTEGER NOT NULL, traveltime INTEGER, generatedate INTEGER NOT NULL, PRIMARY KEY (id, generatedate))")
     #endwith
 

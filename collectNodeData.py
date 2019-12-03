@@ -14,7 +14,7 @@ if __name__ == "__main__":
     datasetPath = DatasetPath()
     downloadPath = os.path.join(datasetPath, f"{fileName}.zip")
     extractPath = os.path.join(datasetPath, f"{fileName}")
-    resultPath = os.path.join(datasetPath, f"{fileName}.db")
+    resultPath = os.path.join(datasetPath, f"{fileName}.sqlite3")
 
     # Download Korea standard node link data
     nodeDataURL = openapiSettings['URL']
