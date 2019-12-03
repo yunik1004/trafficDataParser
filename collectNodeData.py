@@ -2,7 +2,6 @@ import os
 import sqlite3
 import sys
 import zipfile
-import pandas as pd
 from pyproj import Proj, transform
 import requests
 import shapefile

@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 import requests
 import yaml
 
+
 class Traffic:
     def __init__ (self, conn, apiURL):
         self.__conn = conn
